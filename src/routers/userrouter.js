@@ -7,22 +7,15 @@ const sharp = require('sharp');
 
 router.post('/users', async (req, res) => {
     try{
-        // const userByEmail = await User.findOne({email: req.body.email});
-        // const userByUsername = await User.findOne({username: req.body.username});
-        // if(!userByEmail){
-        //     return res.status(400).send({message: "Email in use!"});
-        // }else if(!userByUsername){
-        //     return res.status(400).send({message: "username in use!"});
-        // }
         const user = new User({...req.body});
         await user.save();
-        if(user.phone){
-            const existingPhone = await User.findOne({phone: user.phone});
-            if(existingPhone){
-                await user.remove();
-                return res.status(400).send({error: "Invalid phone number."});
-            }
-        }
+        // if(user.phone){
+        //     const existingPhone = await User.findOne({phone: user.phone});
+        //     if(existingPhone){
+        //         await user.remove();
+        //         return res.status(400).send({error: "Invalid phone number."});
+        //     }
+        // }
         const token = await user.generateAuthToken();
         res.status(201).send({user, token});
     }catch(e){
@@ -85,18 +78,22 @@ router.get('/me/logoutAll', auth, async (req, res) => {
 });
 
 router.patch('/me', auth, async (req, res) => {
-    console.log(req.body);
-    const updateAbles = ['password', 'age', 'name', 'gender', 'phone'];
+    const updateAbles = ['password', 'age', 'name', 'sex', 'phone'];
     const updateRequests = Object.keys(req.body);
     const match = updateRequests.every((request) => updateAbles.includes(request));
     if(!match){
         return res.status(400).send();
     }
-    if(req.body.phone){
+    if(req.body.phone.length === 10){
+        console.log("Runs whtn phonedigit is 10.");
         const existingPhone = await User.findOne({phone: req.body.phone});
         if(existingPhone){
-            return res.status(400).send({error: "Invalid phone number."});
+            if(existingPhone._id.toString() !== req.user._id.toString()){
+                return res.status(400).send({error: "Invalid phone number."});
+            }
         }
+    }else {
+        delete req.body.phone;
     }
     try{
         updateRequests.map((request) => {
