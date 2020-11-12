@@ -12,6 +12,10 @@ app.use(userrouter);
 app.use(messagerouter);
 app.use(notificationrouter);
 
+app.get('/', (req, res) => {
+    res.send({Message: "Application is working correctly"});
+});
+
 
 app.listen(process.env.PORT, () => {
     console.log('Server is up.');
