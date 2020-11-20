@@ -16,7 +16,7 @@ const UserSchema = mongoose.Schema({
         type: String,
         required: true,
         validate(value) {
-            if (value.length < 6) {
+            if (value.length < 8) {
                 throw new Error("Password too short.")
             } else if (value.toLowerCase().includes("password")) {
                 throw new Error("Password should not contain the word: password.")
