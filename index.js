@@ -14,7 +14,7 @@ const cors = require('cors');
 //   }
 // }
 const corsOption = {
-    origin: process.env.CORS_FRONTEND_TEST,
+    origin: process.env.CORS_FRONTEND_PROD,
     optionsSuccessStatus: 200
 }
 app.use(cors(corsOption));
