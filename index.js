@@ -14,7 +14,10 @@ const cors = require('cors');
 //   }
 // }
 
-const whiteList = [process.env.CORS_FRONTEND_PROD, process.env.CORS_FRONTEND_PROD_2, process.env.CORS_FRONTEND_TEST];
+const whiteList = [
+                    // process.env.CORS_FRONTEND_PROD, //deleted one(http link) on heroku.
+                    process.env.CORS_FRONTEND_PROD_2, 
+                    process.env.CORS_FRONTEND_TEST];
 
 const corsOption = {
     origin: (origin, callback) => {
