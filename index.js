@@ -14,8 +14,18 @@ const cors = require('cors');
 //   }
 // }
 
+const whiteList = [process.env.CORS_FRONTEND_PROD, process.env.CORS_FRONTEND_PROD_2];
+
 const corsOption = {
-    origin: process.env.CORS_FRONTEND_PROD || process.env.CORS_FRONTEND_PROD_2,
+    origin: (origin, callback) => {
+        console.log(origin);
+        if(whiteList.indexOf(origin) !== -1){
+            console.log("Cors successful");
+            return callback(null, true);
+        }
+        console.log("failed");
+        callback(new Error("Cors not allowed"));
+    },
     optionsSuccessStatus: 200
 }
 
@@ -38,4 +48,4 @@ app.listen(process.env.PORT, () => {
     console.log('Server is up.');
 });
 
-//commit number: fourteenth
+//commit number: 15
