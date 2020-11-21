@@ -13,10 +13,12 @@ const cors = require('cors');
 //     }
 //   }
 // }
+
 const corsOption = {
-    origin: process.env.CORS_FRONTEND_PROD,
+    origin: process.env.CORS_FRONTEND_PROD || process.env.CORS_FRONTEND_PROD_2,
     optionsSuccessStatus: 200
 }
+
 app.use(cors(corsOption));
 const userrouter = require('./src/routers/userrouter');
 const messagerouter = require('./src/routers/messagerouter');
@@ -35,3 +37,5 @@ app.get('/', (req, res) => {
 app.listen(process.env.PORT, () => {
     console.log('Server is up.');
 });
+
+//commit number: fourteenth
